@@ -13,6 +13,8 @@ import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
+import com.viewgroup.attributes.AttributeExtractorImpl;
+
 /**
  * Created by arpit on 10/28/16.
  */
@@ -30,7 +32,7 @@ public class SwipeDismissLayout extends ViewGroup{
 
     private int draggingOffset;
 
-    private static float BACK_FACTOR = 0.3f;;
+    private static float BACK_FACTOR = 0.3f;
 
     private float finishingPoint = 0;
 
@@ -43,16 +45,47 @@ public class SwipeDismissLayout extends ViewGroup{
     private DragFrom dragFrom = DragFrom.TOP;
 
     public SwipeDismissLayout(Context context) {
-        this(context,null);
+        super(context);
+        viewDragHelper = init();
+
     }
 
     public SwipeDismissLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        viewDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallback());
+        viewDragHelper = init();
+        initialize(attrs);
+    }
+
+    private ViewDragHelper init() {
+        ensureTarget();
+        return ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallback());
+    }
+
+    private void initialize(AttributeSet attrs) {
+        AttributeExtractorImpl.Builder builder = new AttributeExtractorImpl.Builder();
+
+        AttributeExtractorImpl extractor = builder.setContext(getContext())
+                .setAttributeSet(attrs)
+                .build();
+
+        BACK_FACTOR = extractor.getDismissPosition();
+        isSwipeEnabled = extractor.isSwipeEnable();
+        if(extractor.getDismissDirection() == 0){
+            dragFrom = DragFrom.TOP;
+        }
+        extractor.recycleAttributeSets();
     }
 
     public void setSwipeEnabled(boolean swipeEnabled) {
         isSwipeEnabled = swipeEnabled;
+    }
+
+    public void setDismissPosition(float dismissPosition){
+        BACK_FACTOR = dismissPosition;
+    }
+
+    public void setDismissDirection(DragFrom dragFrom){
+        this.dragFrom = dragFrom;
     }
 
     @Override
@@ -99,12 +132,11 @@ public class SwipeDismissLayout extends ViewGroup{
                 break;
         }
     }
-    
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean handled = false;
-        ensureTarget();
-        if (isEnabled() && isSwipeEnabled) {
+        if (isEnabled() && isSwipeEnabled && view !=null) {
             handled = viewDragHelper.shouldInterceptTouchEvent(ev);
         } else {
             viewDragHelper.cancel();

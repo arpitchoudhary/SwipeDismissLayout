@@ -24,6 +24,6 @@ public interface AttributeExtractor {
      *
      * @return
      */
-    String getDismissDirection();
+    int getDismissDirection();
 
 }

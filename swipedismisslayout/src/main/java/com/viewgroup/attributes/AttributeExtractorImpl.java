@@ -1,4 +1,4 @@
-package com.viewgroup.sample;
+package com.viewgroup.attributes;
 
 /**
  * Created by achoudhary on 10/28/16.

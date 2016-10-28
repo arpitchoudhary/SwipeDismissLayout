@@ -1,4 +1,4 @@
-package com.viewgroup.sample;
+package com.viewgroup;
 
 import android.app.Activity;
 import android.content.Context;
@@ -99,9 +99,7 @@ public class SwipeDismissLayout extends ViewGroup{
                 break;
         }
     }
-
-
-
+    
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean handled = false;
@@ -181,7 +179,6 @@ public class SwipeDismissLayout extends ViewGroup{
         public int getViewVerticalDragRange(View child) {
             return verticalDragRange;
         }
-
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {

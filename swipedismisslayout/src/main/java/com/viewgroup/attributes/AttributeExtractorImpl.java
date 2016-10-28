@@ -9,7 +9,7 @@ import com.viewgroup.sample.R;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by achoudhary on 10/28/16.
+ * Created by arpit on 10/28/16.
  */
 
 public class AttributeExtractorImpl implements AttributeExtractor {
@@ -45,6 +45,12 @@ public class AttributeExtractorImpl implements AttributeExtractor {
         return attributeArray().getInt(R.styleable.SwipeDismissLayout_dismiss_direction,0);
     }
 
+    @Override
+    public void recycleAttributeSets() {
+        if(typedArray !=null){
+            typedArray.get().recycle();
+        }
+    }
 
     public static class Builder {
 

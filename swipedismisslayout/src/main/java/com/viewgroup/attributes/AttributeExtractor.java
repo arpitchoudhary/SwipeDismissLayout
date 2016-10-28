@@ -26,4 +26,9 @@ public interface AttributeExtractor {
      */
     int getDismissDirection();
 
+    /**
+     * recycle the attribute set
+     */
+    void recycleAttributeSets();
+
 }

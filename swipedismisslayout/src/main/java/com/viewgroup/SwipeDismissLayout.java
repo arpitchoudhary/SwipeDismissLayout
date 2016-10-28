@@ -57,7 +57,6 @@ public class SwipeDismissLayout extends ViewGroup{
     }
 
     private ViewDragHelper init() {
-        ensureTarget();
         return ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallback());
     }
 
@@ -136,7 +135,8 @@ public class SwipeDismissLayout extends ViewGroup{
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean handled = false;
-        if (isEnabled() && isSwipeEnabled && view !=null) {
+        ensureTarget();
+        if (isEnabled() && isSwipeEnabled) {
             handled = viewDragHelper.shouldInterceptTouchEvent(ev);
         } else {
             viewDragHelper.cancel();

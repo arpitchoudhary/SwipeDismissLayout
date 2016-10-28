@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
-import com.viewgroup.sample.R;
+import com.viewgroup.R;
 
 import java.lang.ref.WeakReference;
 

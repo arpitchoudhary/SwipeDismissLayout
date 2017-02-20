@@ -75,14 +75,26 @@ public class SwipeDismissLayout extends ViewGroup{
         extractor.recycleAttributeSets();
     }
 
+    /**
+     * api to enable/disable swipe functionality
+     * @param swipeEnabled
+     */
     public void setSwipeEnabled(boolean swipeEnabled) {
         isSwipeEnabled = swipeEnabled;
     }
 
+    /**
+     * method to set the dismiss position.
+     * @param dismissPosition
+     */
     public void setDismissPosition(float dismissPosition){
         BACK_FACTOR = dismissPosition;
     }
 
+    /**
+     * method to set the swap or drag direction
+     * @param dragFrom
+     */
     public void setDismissDirection(DragFrom dragFrom){
         this.dragFrom = dragFrom;
     }

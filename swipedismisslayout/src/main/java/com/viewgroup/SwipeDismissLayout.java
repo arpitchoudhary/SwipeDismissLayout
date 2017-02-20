@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
@@ -18,7 +19,7 @@ import com.viewgroup.attributes.AttributeExtractorImpl;
 /**
  * Created by arpit on 10/28/16.
  */
-public class SwipeDismissLayout extends ViewGroup{
+public class SwipeDismissLayout extends ViewGroup {
 
     private final ViewDragHelper viewDragHelper;
 
@@ -38,6 +39,8 @@ public class SwipeDismissLayout extends ViewGroup{
 
     private boolean isSwipeEnabled = false;
 
+    private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+
     public enum DragFrom {
         TOP
     }
@@ -47,13 +50,29 @@ public class SwipeDismissLayout extends ViewGroup{
     public SwipeDismissLayout(Context context) {
         super(context);
         viewDragHelper = init();
+        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                clearScrollableChild();
+            }
+        };
 
+        getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
     }
 
     public SwipeDismissLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         viewDragHelper = init();
         initialize(attrs);
+
+        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                clearScrollableChild();
+            }
+        };
+
+        getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
     }
 
     private ViewDragHelper init() {
@@ -69,7 +88,7 @@ public class SwipeDismissLayout extends ViewGroup{
 
         BACK_FACTOR = extractor.getDismissPosition();
         isSwipeEnabled = extractor.isSwipeEnable();
-        if(extractor.getDismissDirection() == 0){
+        if (extractor.getDismissDirection() == 0) {
             dragFrom = DragFrom.TOP;
         }
         extractor.recycleAttributeSets();
@@ -77,6 +96,7 @@ public class SwipeDismissLayout extends ViewGroup{
 
     /**
      * api to enable/disable swipe functionality
+     *
      * @param swipeEnabled
      */
     public void setSwipeEnabled(boolean swipeEnabled) {
@@ -85,17 +105,19 @@ public class SwipeDismissLayout extends ViewGroup{
 
     /**
      * method to set the dismiss position.
+     *
      * @param dismissPosition
      */
-    public void setDismissPosition(float dismissPosition){
+    public void setDismissPosition(float dismissPosition) {
         BACK_FACTOR = dismissPosition;
     }
 
     /**
      * method to set the swap or drag direction
+     *
      * @param dragFrom
      */
-    public void setDismissDirection(DragFrom dragFrom){
+    public void setDismissDirection(DragFrom dragFrom) {
         this.dragFrom = dragFrom;
     }
 
@@ -212,7 +234,7 @@ public class SwipeDismissLayout extends ViewGroup{
         activity.overridePendingTransition(0, android.R.anim.fade_out);
     }
 
-    private class ViewDragHelperCallback extends ViewDragHelper.Callback{
+    private class ViewDragHelperCallback extends ViewDragHelper.Callback {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
@@ -293,6 +315,11 @@ public class SwipeDismissLayout extends ViewGroup{
         if (viewDragHelper.settleCapturedViewAt(0, finalTop)) {
             ViewCompat.postInvalidateOnAnimation(SwipeDismissLayout.this);
         }
+    }
+
+    private void clearScrollableChild() {
+        scrollableChild = null;
+        view = null;
     }
 }
 

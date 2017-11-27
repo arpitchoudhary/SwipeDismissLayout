@@ -30,5 +30,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.0.2'
     testCompile 'junit:junit:4.12'
-    compile project(':swipedismisslayout')
+    //compile project(':swipedismisslayout')
+    compile 'com.viewgroup:swipedismisslayout:1.0.0'
 }

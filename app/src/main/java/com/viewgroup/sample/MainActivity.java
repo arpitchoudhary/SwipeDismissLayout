@@ -13,12 +13,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button webView = (Button) findViewById(R.id.webViewBtn);
+        Button webView = findViewById(R.id.webViewBtn);
 
         webView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,WebViewActivity.class));
+                startActivity(new Intent(MainActivity.this, WebViewActivity.class));
             }
         });
     }

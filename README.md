@@ -15,7 +15,7 @@ Demo
 -------------------
 Watch a short demo on youtube. Here is the [link](https://youtu.be/53ichWG7D_E)
 Currently I am using this viewgroup with the webview activity. 
-But can be used with any other activity. In case of fragment, the holder activity layout should have the viewgroup added as a parent.
+But can be used with any other activity. In case of fragment, the holder activity layout should have the viewgroup added as a parent. you can also check [here](https://github.com/arpitchoudhary/SwipeDismissLayout/blob/master/app/src/main/res/layout/webview.xml) how i have used this view group in layout file.
 
 
 Usage

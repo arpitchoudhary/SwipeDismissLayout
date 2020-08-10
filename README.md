@@ -1,6 +1,8 @@
 SwipeDismissLayout
 ===================
 forked from [arpitchoudhary/SwipeDismissLayout](https://github.com/arpitchoudhary/SwipeDismissLayout)
+added swipe from top, start, bottom, end with RTL support
+migrated to AndroidX, updated Gradle and build tools
 
 SwipeDismissLayout is a viewgroup which if added as a parent viewgroup in the layout (activity) container, can enables the capability to finish the activity/fragment via slide down gesture.
 

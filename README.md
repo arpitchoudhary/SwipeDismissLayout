@@ -1,5 +1,6 @@
 SwipeDismissLayout
 ===================
+forked from [arpitchoudhary/SwipeDismissLayout](https://github.com/arpitchoudhary/SwipeDismissLayout)
 
 SwipeDismissLayout is a viewgroup which if added as a parent viewgroup in the layout (activity) container, can enables the capability to finish the activity/fragment via slide down gesture.
 
@@ -7,23 +8,26 @@ SwipeDismissLayout is a viewgroup which if added as a parent viewgroup in the la
 
 Requirements
 -------------
-Have tested on Android **API Level 14+**
+**API Level 17+**
 
 ----------
-
-Demo
--------------------
-Watch a short demo on youtube here is the [link.](https://youtu.be/53ichWG7D_E)
-Currently I am using this viewgroup with the webview activity. 
-But can be used with any other activity. In case of fragment, the holder activity layout should have the viewgroup added as a parent. you can also check [here](https://github.com/arpitchoudhary/SwipeDismissLayout/blob/master/app/src/main/res/layout/webview.xml) how i have used this view group in layout file.
 
 
 Usage
 -------------
-Add a dependency to your build.gradle
+Add it in your root build.gradle at the end of repositories:
 
->  dependencies  {
-	     compile 'com.viewgroup:swipedismisslayout:1.0.0'
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+Add the dependency
+
+  dependencies  {
+	     implementation 'com.github.mohappsdev:SwipeDismissLayout:v1.0.0'
 }
 
 ----------
@@ -33,18 +37,18 @@ Version
 
  ----------
 
-License
--------------
- Copyright 2017 Arpit Choudhary
+## LICENSE
 
->Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    Copyright 2020 mohapps
 
-  > http://www.apache.org/licenses/LICENSE-2.0
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
->Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

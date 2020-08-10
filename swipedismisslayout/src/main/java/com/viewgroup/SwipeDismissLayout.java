@@ -2,9 +2,6 @@ package com.viewgroup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +12,10 @@ import android.widget.AbsListView;
 import android.widget.ScrollView;
 
 import com.viewgroup.attributes.AttributeExtractorImpl;
+
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by arpit on 10/28/16.
@@ -28,6 +29,7 @@ public class SwipeDismissLayout extends ViewGroup {
     private View scrollableChild;
 
     private int verticalDragRange = 0;
+    private int horizontalDragRange = 0;
 
     private int dragState = 0;
 
@@ -42,20 +44,18 @@ public class SwipeDismissLayout extends ViewGroup {
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
 
     public enum DragFrom {
-        TOP
+        TOP,
+        START,
+        BOTTOM,
+        END
     }
 
-    private DragFrom dragFrom = DragFrom.TOP;
+    private DragFrom dragFrom /*= DragFrom.START*/;
 
     public SwipeDismissLayout(Context context) {
         super(context);
         viewDragHelper = init();
-        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                clearScrollableChild();
-            }
-        };
+        globalLayoutListener = this::clearScrollableChild;
 
         getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
     }
@@ -65,12 +65,7 @@ public class SwipeDismissLayout extends ViewGroup {
         viewDragHelper = init();
         initialize(attrs);
 
-        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                clearScrollableChild();
-            }
-        };
+        globalLayoutListener = this::clearScrollableChild;
 
         getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
     }
@@ -88,9 +83,21 @@ public class SwipeDismissLayout extends ViewGroup {
 
         BACK_FACTOR = extractor.getDismissPosition();
         isSwipeEnabled = extractor.isSwipeEnable();
-        if (extractor.getDismissDirection() == 0) {
-            dragFrom = DragFrom.TOP;
+        switch (extractor.getDismissDirection()){
+            case 0:
+                dragFrom = DragFrom.TOP;
+                break;
+            case 1:
+                dragFrom = DragFrom.START;
+                break;
+            case 2:
+                dragFrom = DragFrom.BOTTOM;
+                break;
+            case 3:
+                dragFrom = DragFrom.END;
+                break;
         }
+
         extractor.recycleAttributeSets();
     }
 
@@ -130,13 +137,14 @@ public class SwipeDismissLayout extends ViewGroup {
 
         View child = getChildAt(0);
 
-        int childWidth = width - getPaddingLeft() - getPaddingRight();
+        int childWidth = width - getPaddingStart() - getPaddingEnd();
         int childHeight = height - getPaddingTop() - getPaddingBottom();
-        int childLeft = getPaddingLeft();
+        int childStart = getPaddingStart();
         int childTop = getPaddingTop();
-        int childRight = childLeft + childWidth;
+        int childEnd = childStart + childWidth;
         int childBottom = childTop + childHeight;
-        child.layout(childLeft, childTop, childRight, childBottom);
+        //TODO:left - start
+        child.layout(childStart, childTop, childEnd, childBottom);
 
     }
 
@@ -148,7 +156,7 @@ public class SwipeDismissLayout extends ViewGroup {
         }
 
         if (getChildCount() > 0) {
-            int measureWidth = MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY);
+            int measureWidth = MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingStart() - getPaddingEnd(), MeasureSpec.EXACTLY);
             int measureHeight = MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY);
             getChildAt(0).measure(measureWidth, measureHeight);
         }
@@ -158,10 +166,20 @@ public class SwipeDismissLayout extends ViewGroup {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         verticalDragRange = h;
+        horizontalDragRange = w;
 
         switch (dragFrom) {
             case TOP:
                 finishingPoint = finishingPoint > 0 ? finishingPoint : verticalDragRange * BACK_FACTOR;
+                break;
+            case START:
+                finishingPoint = finishingPoint > 0 ? finishingPoint : horizontalDragRange * BACK_FACTOR;
+                break;
+            case BOTTOM:
+                finishingPoint = finishingPoint > 0 ? finishingPoint : verticalDragRange * BACK_FACTOR;
+                break;
+            case END:
+                finishingPoint = finishingPoint > 0 ? finishingPoint : horizontalDragRange * BACK_FACTOR;
                 break;
         }
     }
@@ -225,9 +243,21 @@ public class SwipeDismissLayout extends ViewGroup {
     }
 
     public boolean canChildScrollUp() {
-        return ViewCompat.canScrollVertically(scrollableChild, -1);
+        return scrollableChild!=null && scrollableChild.canScrollVertically(-1);
+    }
+    public boolean canChildScrollDown() {
+        return scrollableChild!=null && scrollableChild.canScrollVertically(1);
+    }
+    public boolean canChildScrollStart() {
+        return scrollableChild!=null && scrollableChild.canScrollHorizontally((isRtl())?1:-1);
+    }
+    public boolean canChildScrollEnd() {
+        return scrollableChild!=null && scrollableChild.canScrollHorizontally((isRtl())?-1:1);
     }
 
+    private boolean isRtl(){
+        return getContext().getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
     private void dismiss() {
         Activity activity = (Activity) getContext();
         activity.finish();
@@ -247,6 +277,11 @@ public class SwipeDismissLayout extends ViewGroup {
         }
 
         @Override
+        public int getViewHorizontalDragRange(View child) {
+            return horizontalDragRange;
+        }
+
+        @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
 
             int result = 0;
@@ -255,7 +290,28 @@ public class SwipeDismissLayout extends ViewGroup {
                 final int bottomBound = verticalDragRange;
                 result = Math.min(Math.max(top, topBound), bottomBound);
             }
+            else if (dragFrom == DragFrom.BOTTOM && !canChildScrollDown() && top > 0) {
+                final int bottomBound = getPaddingBottom();
+                final int topBound = verticalDragRange;
+                result = Math.min(Math.max(top, bottomBound), topBound);
+            }
 
+            return result;
+        }
+        @Override
+        public int clampViewPositionHorizontal(View child, int left, int dx) {
+            //TODO:left - start
+            int result = 0;
+            if (dragFrom == DragFrom.START && !canChildScrollStart() && left > 0) {
+                final int startBound = getPaddingStart();
+                final int endBound = horizontalDragRange;
+                result = Math.min(Math.max(left, startBound), endBound);
+            }
+            else if (dragFrom == DragFrom.END && !canChildScrollEnd() && left > 0) {
+                final int endBound = getPaddingEnd();
+                final int startBound = horizontalDragRange;
+                result = Math.min(Math.max(left, endBound), startBound);
+            }
             return result;
         }
 
@@ -265,8 +321,20 @@ public class SwipeDismissLayout extends ViewGroup {
 
             if ((dragState == ViewDragHelper.STATE_DRAGGING || dragState == ViewDragHelper.STATE_SETTLING) &&
                     state == ViewDragHelper.STATE_IDLE) {
-                if (draggingOffset == verticalDragRange) {
-                    dismiss();
+
+                switch (dragFrom) {
+                    case TOP:
+                    case BOTTOM:
+                        if (draggingOffset == verticalDragRange) {
+                            dismiss();
+                        }
+                        break;
+                    case START:
+                    case END:
+                        if (draggingOffset == horizontalDragRange) {
+                            dismiss();
+                        }
+                        break;
                 }
             }
 
@@ -276,9 +344,19 @@ public class SwipeDismissLayout extends ViewGroup {
 
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            //TODO:left - start
             switch (dragFrom) {
                 case TOP:
                     draggingOffset = Math.abs(top);
+                    break;
+                case START:
+                    draggingOffset = Math.abs(left);
+                    break;
+                case BOTTOM:
+                    draggingOffset = Math.abs(top);
+                    break;
+                case END:
+                    draggingOffset = Math.abs(left);
                     break;
                 default:
                     break;
@@ -289,20 +367,37 @@ public class SwipeDismissLayout extends ViewGroup {
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             if (draggingOffset == 0) return;
 
-            if (draggingOffset == verticalDragRange) return;
-            boolean isBack = false;
-
-            if (draggingOffset >= finishingPoint) {
-                isBack = true;
-            } else if (draggingOffset < finishingPoint) {
-                isBack = false;
+            switch (dragFrom) {
+                case TOP:
+                case BOTTOM:
+                    if (draggingOffset == verticalDragRange) return;
+                    break;
+                case START:
+                case END:
+                    if (draggingOffset == horizontalDragRange) return;
+                    break;
             }
 
+            boolean isBack = draggingOffset >= finishingPoint;
+
             int finalTop;
+            int finalStart;
             switch (dragFrom) {
                 case TOP:
                     finalTop = isBack ? verticalDragRange : 0;
                     smoothScrollToY(finalTop);
+                    break;
+                case START:
+                    finalStart = isBack ? horizontalDragRange : 0;
+                    smoothScrollToX(finalStart);
+                    break;
+                case BOTTOM:
+                    finalTop = isBack ? verticalDragRange : 0;
+                    smoothScrollToY(finalTop);
+                    break;
+                case END:
+                    finalStart = isBack ? horizontalDragRange : 0;
+                    smoothScrollToX(finalStart);
                     break;
                 default:
                     break;
@@ -313,6 +408,12 @@ public class SwipeDismissLayout extends ViewGroup {
 
     private void smoothScrollToY(int finalTop) {
         if (viewDragHelper.settleCapturedViewAt(0, finalTop)) {
+            ViewCompat.postInvalidateOnAnimation(SwipeDismissLayout.this);
+        }
+    }
+    private void smoothScrollToX(int finalStart) {
+        //TODO:left - start
+        if (viewDragHelper.settleCapturedViewAt(finalStart, 0)) {
             ViewCompat.postInvalidateOnAnimation(SwipeDismissLayout.this);
         }
     }

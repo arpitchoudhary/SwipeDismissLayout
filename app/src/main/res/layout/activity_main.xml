@@ -4,12 +4,30 @@
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.viewgroup.sample.MainActivity">
+        tools:context="com.viewgroup.sample.MainActivity"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <Button
-        android:id="@+id/webViewBtn"
+        android:id="@+id/button_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Open Webview"/>
+        android:text="Open Swipe from Top"/>
 
+    <Button
+        android:id="@+id/button_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Open Swipe from Start"/>
+
+    <Button
+        android:id="@+id/button_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Open Swipe from Bottom"/>
+    <Button
+        android:id="@+id/button_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Open Swipe from End"/>
 </LinearLayout>

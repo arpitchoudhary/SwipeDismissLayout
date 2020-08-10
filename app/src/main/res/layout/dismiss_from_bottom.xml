@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.viewgroup.SwipeDismissLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:swipe_enable="true"
+    app:dismiss_direction="bottom">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="Swipe me from Bottom"
+           android:textSize="50dp"
+           android:gravity="center"/>
+
+    </RelativeLayout>
+</com.viewgroup.SwipeDismissLayout>

@@ -4,16 +4,20 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:swipe_enable="true">
+    app:swipe_enable="true"
+    app:dismiss_direction="start">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></WebView>
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="Swipe me from Start"
+           android:textSize="50dp"
+           android:gravity="center"/>
 
     </RelativeLayout>
 </com.viewgroup.SwipeDismissLayout>

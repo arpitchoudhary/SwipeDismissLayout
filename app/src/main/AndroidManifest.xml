@@ -17,7 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.viewgroup.sample.WebViewActivity"
+        <activity android:name="com.viewgroup.sample.DismissFromTopActivity"
+            android:theme="@style/SwipeDismissTheme">
+        </activity>
+        <activity android:name="com.viewgroup.sample.DismissFromStartActivity"
+            android:theme="@style/SwipeDismissTheme">
+        </activity>
+        <activity android:name="com.viewgroup.sample.DismissFromBottomActivity"
+            android:theme="@style/SwipeDismissTheme">
+        </activity>
+        <activity android:name="com.viewgroup.sample.DismissFromEndActivity"
             android:theme="@style/SwipeDismissTheme">
         </activity>
     </application>

@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/mohappsdev/SwipeDismissLayout.svg)](https://jitpack.io/#mohappsdev/SwipeDismissLayout)
+
 SwipeDismissLayout
 ===================
 forked from [arpitchoudhary/SwipeDismissLayout](https://github.com/arpitchoudhary/SwipeDismissLayout)

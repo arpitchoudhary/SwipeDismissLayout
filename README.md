@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/mohappsdev/SwipeDismissLayout.svg)](https://jitpack.io/#mohappsdev/SwipeDismissLayout)
+
 SwipeDismissLayout
 ===================
 forked from [arpitchoudhary/SwipeDismissLayout](https://github.com/arpitchoudhary/SwipeDismissLayout)
@@ -33,9 +35,9 @@ Add it in your root build.gradle at the end of repositories:
 
 Add the dependency
 
-    dependencies  {
+        dependencies  {
 	     implementation 'com.github.mohappsdev:SwipeDismissLayout:v1.0.0'
-    }
+        }
 
 Wrap the activity you want to be dismissable in com.viewgroup.SwipeDismissLayout and set dismiss_direction:
 

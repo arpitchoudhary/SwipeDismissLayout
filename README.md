@@ -36,7 +36,7 @@ Add it in your root build.gradle at the end of repositories:
 Add the dependency
 
         dependencies  {
-	     implementation 'com.github.mohappsdev:SwipeDismissLayout:v1.0.0'
+	     implementation 'com.github.mohappsdev:SwipeDismissLayout:v1.1.0'
         }
 
 Wrap the activity you want to be dismissable in com.viewgroup.SwipeDismissLayout and set dismiss_direction:

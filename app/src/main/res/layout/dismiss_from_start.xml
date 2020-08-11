@@ -7,17 +7,19 @@
     app:swipe_enable="true"
     app:dismiss_direction="start">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent">
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
 
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
            android:text="Swipe me from Start"
            android:textSize="50dp"
            android:gravity="center"/>
-
-    </RelativeLayout>
+        <include layout="@layout/directions" />
+    </LinearLayout>
 </com.viewgroup.SwipeDismissLayout>

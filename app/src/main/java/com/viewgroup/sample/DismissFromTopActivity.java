@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * Created by Arpit on 11/1/2016.
  */
-public class DismissFromTopActivity extends AppCompatActivity {
+public class DismissFromTopActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -37,10 +37,45 @@ Add the dependency
 	     implementation 'com.github.mohappsdev:SwipeDismissLayout:v1.0.0'
     }
 
+Wrap the activity you want to be dismissable in com.viewgroup.SwipeDismissLayout and set dismiss_direction:
+
+        <com.viewgroup.SwipeDismissLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:swipe_enable="true"
+    app:dismiss_direction="start">
+     <!--Your Activity layout-->
+        </com.viewgroup.SwipeDismissLayout>
+
+Set translucent theme for that activity in AndroidManifest:
+
+      <activity android:name="YourDismissFromStartActivity"
+            android:theme="@style/SwipeDismissTheme">
+
+Translucent theme includes these:
+
+         <item name="android:windowIsTranslucent">true</item>
+         <item name="android:windowBackground">@android:color/transparent</item>
+
+If translucent theme causes your dismissable activity layout background to be transparent, set background for first layout element that you wrapped by com.viewgroup.SwipeDismissLayout
+
+     <com.viewgroup.SwipeDismissLayout
+     <!--Properties-->
+     >
+         <LinearLayout
+         <!--Properties-->
+         android:background="?android:colorBackground">
+         </LinearLayout>
+      </com.viewgroup.SwipeDismissLayout>
+
+
+
 ----------
 Version
 -------------
-1.0.0
+1.1.0
 
  ----------
 

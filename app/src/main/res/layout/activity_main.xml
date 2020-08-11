@@ -5,7 +5,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.viewgroup.sample.MainActivity"
-    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <Button
@@ -30,4 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Open Swipe from End"/>
+      <Spinner
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/spinner_layout_direction"/>
 </LinearLayout>

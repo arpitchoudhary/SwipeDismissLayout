@@ -11,7 +11,7 @@ migrated to AndroidX, updated Gradle and build tools
 
 ----------
 
-SwipeDismissLayout is a viewgroup which if added as a parent viewgroup in the layout (activity) container, can enables the capability to finish the activity/fragment via slide down gesture.
+SwipeDismissLayout is a viewgroup which if added as a parent viewgroup in the layout (activity) container, can enables the capability to finish the activity/fragment via swipe gesture.
 
 ----------
 
